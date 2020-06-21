@@ -21,6 +21,8 @@ public class ResponseService {
         ACCESS_DENIED(-1003, "보유한 권한으로 접근할수 없는 리소스"),
 
         CANT_CANCEL_COUPON(-2002, "사용 취소 기간이 지난 쿠폰"),
+        ISSUABLE_COUPON_NOT_EXIST(-2003, "발급가능한 쿠폰이 없음"),
+        COUPON_NOT_EXIST(-2004, "해당 쿠폰이 없음"),
         ALREADY_USED_COUPON(-2000, "이미 사용한 쿠폰");
 
         int code;

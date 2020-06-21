@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kkwonsy.kkopservice.advice.exception.AlreadyUsedCouponException;
 import com.kkwonsy.kkopservice.advice.exception.CUserNotFoundException;
+import com.kkwonsy.kkopservice.advice.exception.CouponNotExistException;
+import com.kkwonsy.kkopservice.advice.exception.IssuableCouponNotExistException;
 import com.kkwonsy.kkopservice.advice.exception.TimeOutToCancelCouponException;
 import com.kkwonsy.kkopservice.domain.Coupon;
 import com.kkwonsy.kkopservice.domain.User;
@@ -57,6 +59,9 @@ public class UserCouponService {
     @Transactional
     public IssuedCoupon issueCoupon(Long userId) {
         Coupon coupon = couponJpaRepository.findFirstByIssuedYnIsFalse();
+        if (coupon == null) {
+            throw new IssuableCouponNotExistException();
+        }
         coupon.issueCoupon();
 
         User user = userJpaRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
@@ -82,6 +87,9 @@ public class UserCouponService {
     @Transactional
     public void useCoupon(Long userId, Long couponId) {
         UserCoupon found = userCouponJpaRepository.findByCouponIdAndUserId(couponId, userId);
+        if (found == null) {
+            throw new CouponNotExistException();
+        }
         if (!found.isUsedYn()) {
             found.useCoupon();
             userCouponJpaRepository.save(found);
@@ -93,6 +101,9 @@ public class UserCouponService {
     @Transactional
     public void cancelUsingCoupon(Long userId, Long couponId) {
         UserCoupon found = userCouponJpaRepository.findByCouponIdAndUserId(couponId, userId);
+        if (found == null) {
+            throw new CouponNotExistException();
+        }
         LocalDateTime hourAgo = LocalDateTime.now().minusHours(1);
         if (found.isUsedYn() && found.getUsedDate().isAfter(hourAgo)) { // 사용후 1시간 지나면 취소할 수 없음
             found.cancelUsingCoupon();

@@ -12,6 +12,8 @@ import com.kkwonsy.kkopservice.advice.exception.AlreadyUsedCouponException;
 import com.kkwonsy.kkopservice.advice.exception.CAuthenticationEntryPointException;
 import com.kkwonsy.kkopservice.advice.exception.CEmailSigninFailedException;
 import com.kkwonsy.kkopservice.advice.exception.CUserNotFoundException;
+import com.kkwonsy.kkopservice.advice.exception.CouponNotExistException;
+import com.kkwonsy.kkopservice.advice.exception.IssuableCouponNotExistException;
 import com.kkwonsy.kkopservice.advice.exception.TimeOutToCancelCouponException;
 import com.kkwonsy.kkopservice.model.response.CommonResult;
 import com.kkwonsy.kkopservice.service.ResponseService;
@@ -62,5 +64,15 @@ public class ExceptionAdvice {
     @ExceptionHandler(TimeOutToCancelCouponException.class)
     public CommonResult TimeOutToCancelCouponException(HttpServletRequest request, TimeOutToCancelCouponException e) {
         return responseService.getFailResult(CommonResponse.CANT_CANCEL_COUPON);
+    }
+
+    @ExceptionHandler(IssuableCouponNotExistException.class)
+    public CommonResult IssuableCouponNotExistException(HttpServletRequest request, IssuableCouponNotExistException e) {
+        return responseService.getFailResult(CommonResponse.ISSUABLE_COUPON_NOT_EXIST);
+    }
+
+    @ExceptionHandler(CouponNotExistException.class)
+    public CommonResult CouponNotExistException(HttpServletRequest request, CouponNotExistException e) {
+        return responseService.getFailResult(CommonResponse.COUPON_NOT_EXIST);
     }
 }
