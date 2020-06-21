@@ -17,8 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.kkwonsy.kkopservice.domain.user.User;
-import com.kkwonsy.kkopservice.domain.user.UserRepository;
+import com.kkwonsy.kkopservice.domain.User;
+import com.kkwonsy.kkopservice.repository.UserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -44,7 +44,7 @@ public class SignControllerTest {
     public void setUp() throws Exception {
         userRepository.save(
             User.builder()
-                .uid("kkwonsytest@naver.com")
+                .email("kkwonsytest@naver.com")
                 .name("kkwonsytest")
                 .password(passwordEncoder.encode("1234"))
                 .roles(Collections.singletonList("ROLE_USER"))
@@ -54,7 +54,7 @@ public class SignControllerTest {
     @Test
     public void signin() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("uid", "kkwonsytest@naver.com");
+        params.add("email", "kkwonsytest@naver.com");
         params.add("password", "1234");
         mockMvc.perform(post("/v1/signin").params(params))
             .andDo(print())
@@ -68,13 +68,13 @@ public class SignControllerTest {
     @Test
     public void signinFail() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("uid", "kkwonsytest@naver.com");
+        params.add("email", "kkwonsytest@naver.com");
         params.add("password", "12345");
         mockMvc.perform(post("/v1/signin").params(params))
             .andDo(print())
             .andExpect(status().is5xxServerError())
             .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.code").value(-1)) // todo
+            .andExpect(jsonPath("$.code").value(-1001))
             .andExpect(jsonPath("$.msg").exists());
     }
 
@@ -82,7 +82,7 @@ public class SignControllerTest {
     public void signup() throws Exception {
         long epochTime = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("uid", "kkwonsytest_" + epochTime + "@naver.com");
+        params.add("email", "kkwonsytest_" + epochTime + "@naver.com");
         params.add("password", "12345");
         params.add("name", "kkwonsytest_" + epochTime);
         mockMvc.perform(post("/v1/signup").params(params))
@@ -96,13 +96,13 @@ public class SignControllerTest {
     @Test
     public void signupFail() throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("uid", "kkwonsytest@naver.com");
+        params.add("email", "kkwonsytest@naver.com");
         params.add("password", "12345");
         params.add("name", "kkwonsytest");
         mockMvc.perform(post("/v1/signup").params(params))
             .andDo(print())
             .andExpect(status().is5xxServerError())
             .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.code").value(-1)); // todo
+            .andExpect(jsonPath("$.code").value(-9999));
     }
 }

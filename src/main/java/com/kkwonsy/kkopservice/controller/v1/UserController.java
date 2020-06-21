@@ -1,25 +1,21 @@
 package com.kkwonsy.kkopservice.controller.v1;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kkwonsy.kkopservice.advice.exception.CUserNotFoundException;
-import com.kkwonsy.kkopservice.domain.user.User;
-import com.kkwonsy.kkopservice.domain.user.UserRepository;
+import com.kkwonsy.kkopservice.domain.User;
 import com.kkwonsy.kkopservice.model.response.CommonResult;
 import com.kkwonsy.kkopservice.model.response.ListResult;
 import com.kkwonsy.kkopservice.model.response.SingleResult;
+import com.kkwonsy.kkopservice.repository.UserRepository;
 import com.kkwonsy.kkopservice.service.ResponseService;
 
 import io.swagger.annotations.Api;
@@ -52,10 +48,11 @@ public class UserController {
     })
     @ApiOperation(value = "회원 단건 조회", notes = "회원번호(id)로 회원을 조회한다")
     @GetMapping(value = "/user")
-    public SingleResult<User> findUserById() {
+    public SingleResult<User> findUserByEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String id = authentication.getName();
-        return responseService.getSingleResult(userRepository.findByUid(id).orElseThrow(CUserNotFoundException::new));
+        String email = authentication.getName();
+        return responseService
+            .getSingleResult(userRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new));
     }
 
     @ApiImplicitParams({
@@ -67,8 +64,8 @@ public class UserController {
         @ApiParam(value = "회원이름", required = true) @RequestParam String name) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String id = authentication.getName();
-        User user = userRepository.findByUid(id).orElseThrow(CUserNotFoundException::new);
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new);
         user.setName(name);
         return responseService.getSingleResult(userRepository.save(user));
     }

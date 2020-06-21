@@ -20,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.kkwonsy.kkopservice.domain.user.User;
-import com.kkwonsy.kkopservice.domain.user.UserRepository;
+import com.kkwonsy.kkopservice.domain.User;
+import com.kkwonsy.kkopservice.repository.UserRepository;
 
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -52,14 +52,14 @@ public class UserControllerTest {
     public void setUp() throws Exception {
         userRepository.save(
             User.builder()
-                .uid("kkwonsytest@naver.com")
+                .email("kkwonsytest@naver.com")
                 .name("kkwonsytest")
                 .password(passwordEncoder.encode("1234"))
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build());
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("uid", "kkwonsytest@naver.com");
+        params.add("email", "kkwonsytest@naver.com");
         params.add("password", "1234");
         MvcResult result = mockMvc.perform(post("/v1/signin").params(params))
             .andDo(print())
@@ -126,7 +126,7 @@ public class UserControllerTest {
 //    @Test
 //    public void modify() throws Exception {
 //        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-//        params.add("uid", "kkwonsytest@naver.com");
+//        params.add("email", "kkwonsytest@naver.com");
 //        String newName = "kkwonsytest_new";
 //        params.add("name", newName);
 //        mockMvc.perform(MockMvcRequestBuilders
@@ -141,7 +141,7 @@ public class UserControllerTest {
 
     @Test
     public void delete() throws Exception {
-        Optional<User> user = userRepository.findByUid("kkwonsytest@naver.com");
+        Optional<User> user = userRepository.findByEmail("kkwonsytest@naver.com");
         assertTrue(user.isPresent());
         mockMvc.perform(MockMvcRequestBuilders
             .delete("/v1/user/" + user.get().getId())

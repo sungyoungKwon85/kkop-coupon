@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.kkwonsy.kkopservice.advice.exception.CUserNotFoundException;
-import com.kkwonsy.kkopservice.domain.user.UserRepository;
+import com.kkwonsy.kkopservice.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

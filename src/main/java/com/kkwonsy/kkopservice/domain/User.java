@@ -1,4 +1,4 @@
-package com.kkwonsy.kkopservice.domain.user;
+package com.kkwonsy.kkopservice.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kkwonsy.kkopservice.domain.BaseDateEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,10 +40,11 @@ public class User extends BaseDateEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false, unique = true, length = 50)
-    private String uid;
+    private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(length = 100)
@@ -70,7 +70,7 @@ public class User extends BaseDateEntity implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
-        return this.uid;
+        return this.email;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

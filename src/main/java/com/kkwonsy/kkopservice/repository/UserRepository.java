@@ -1,9 +1,12 @@
-package com.kkwonsy.kkopservice.domain.user;
+package com.kkwonsy.kkopservice.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.kkwonsy.kkopservice.domain.User;
+
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUid(String email);
+
+    Optional<User> findByEmail(String email);
 }
