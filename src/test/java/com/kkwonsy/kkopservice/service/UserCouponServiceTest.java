@@ -22,8 +22,8 @@ import com.kkwonsy.kkopservice.domain.User;
 import com.kkwonsy.kkopservice.domain.UserCoupon;
 import com.kkwonsy.kkopservice.model.response.v1.IssuedCoupon;
 import com.kkwonsy.kkopservice.repository.CouponJpaRepository;
-import com.kkwonsy.kkopservice.repository.UserCouponRepository;
-import com.kkwonsy.kkopservice.repository.UserRepository;
+import com.kkwonsy.kkopservice.repository.UserCouponJpaRepository;
+import com.kkwonsy.kkopservice.repository.UserJpaRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,12 +39,12 @@ public class UserCouponServiceTest {
     private CouponJpaRepository couponJpaRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserCouponRepository userCouponRepository;
+    private UserCouponJpaRepository userCouponJpaRepository;
 
     @Test
     public void createCoupon_then_check_they_are_made() throws Exception {
@@ -82,8 +82,8 @@ public class UserCouponServiceTest {
         String code2 = LocalDateTime.now().plusDays(10).toString();
         Coupon coupon2 = Coupon.createCoupon(code2);
         couponJpaRepository.save(coupon2);
-        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon1));
-        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon2));
+        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon1));
+        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon2));
 
         // when
         List<IssuedCoupon> couponsBy = userCouponService.getCouponsBy(user.getId());
@@ -103,12 +103,12 @@ public class UserCouponServiceTest {
         String code2 = LocalDateTime.now().plusDays(10).toString();
         Coupon coupon2 = Coupon.createCoupon(code2);
         couponJpaRepository.save(coupon2);
-        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon1));
-        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon2));
+        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon1));
+        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon2));
 
         // when
         userCouponService.useCoupon(user.getId(), coupon1.getId());
-        UserCoupon usedCoupon = userCouponRepository.findByCouponIdAndUserId(coupon1.getId(), user.getId());
+        UserCoupon usedCoupon = userCouponJpaRepository.findByCouponIdAndUserId(coupon1.getId(), user.getId());
         // then
         assertThat(usedCoupon).isNotNull();
         assertThat(usedCoupon.isUsedYn()).isTrue();
@@ -125,8 +125,8 @@ public class UserCouponServiceTest {
         String code2 = LocalDateTime.now().plusDays(10).toString();
         Coupon coupon2 = Coupon.createCoupon(code2);
         couponJpaRepository.save(coupon2);
-        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon1));
-        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon2));
+        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon1));
+        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon2));
 
         userCouponService.useCoupon(user.getId(), coupon1.getId());
 
@@ -145,44 +145,21 @@ public class UserCouponServiceTest {
         String code2 = LocalDateTime.now().plusDays(10).toString();
         Coupon coupon2 = Coupon.createCoupon(code2);
         couponJpaRepository.save(coupon2);
-        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon1));
-        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon2));
+        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon1));
+        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon2));
 
         userCouponService.useCoupon(user.getId(), coupon1.getId());
 
         // when
         userCouponService.cancelUsingCoupon(user.getId(), coupon1.getId());
-        UserCoupon canceledCoupon = userCouponRepository.findByCouponIdAndUserId(coupon1.getId(), user.getId());
+        UserCoupon canceledCoupon = userCouponJpaRepository.findByCouponIdAndUserId(coupon1.getId(), user.getId());
         // then
         assertThat(canceledCoupon).isNotNull();
         assertThat(canceledCoupon.isUsedYn()).isFalse();
     }
 
-    // todo
-//    @Test(expected = TimeOutToCancelCouponException.class)
-//    public void cancelUsingCoupon_fail() throws Exception {
-//        // given
-//        User user = saveAndGetUser();
-//
-//        String code1 = LocalDateTime.now().toString();
-//        Coupon coupon1 = Coupon.createCoupon(code1);
-//        couponJpaRepository.save(coupon1);
-//        String code2 = LocalDateTime.now().plusDays(10).toString();
-//        Coupon coupon2 = Coupon.createCoupon(code2);
-//        couponJpaRepository.save(coupon2);
-//        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon1));
-//        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon2));
-//
-//        userCouponService.useCoupon(user.getId(), coupon1.getId());
-//        UserCoupon usedCoupon = userCouponRepository.findByCouponIdAndUserId(coupon1.getId(), user.getId());
-////        usedCoupon.se
-//
-//        // when
-//        userCouponService.cancelUsingCoupon(user.getId(), coupon1.getId());
-//    }
-
     private User saveAndGetUser() {
-        return userRepository.save(
+        return userJpaRepository.save(
             User.builder()
                 .email("kkwonsytest@naver.com")
                 .name("kkwonsytest")

@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.kkwonsy.kkopservice.advice.exception.CUserNotFoundException;
-import com.kkwonsy.kkopservice.repository.UserRepository;
+import com.kkwonsy.kkopservice.repository.UserJpaRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,9 +13,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
 
     public UserDetails loadUserByUsername(String id) {
-        return userRepository.findById(Long.valueOf(id)).orElseThrow(CUserNotFoundException::new);
+        return userJpaRepository.findById(Long.valueOf(id)).orElseThrow(CUserNotFoundException::new);
     }
 }

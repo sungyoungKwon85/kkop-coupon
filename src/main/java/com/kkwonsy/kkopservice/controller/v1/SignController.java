@@ -13,7 +13,7 @@ import com.kkwonsy.kkopservice.config.security.JwtTokenProvider;
 import com.kkwonsy.kkopservice.domain.User;
 import com.kkwonsy.kkopservice.model.response.CommonResult;
 import com.kkwonsy.kkopservice.model.response.SingleResult;
-import com.kkwonsy.kkopservice.repository.UserRepository;
+import com.kkwonsy.kkopservice.repository.UserJpaRepository;
 import com.kkwonsy.kkopservice.service.ResponseService;
 
 import io.swagger.annotations.Api;
@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/v1")
 public class SignController {
 
-    private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final ResponseService responseService;
     private final PasswordEncoder passwordEncoder;
@@ -37,7 +37,7 @@ public class SignController {
     public SingleResult<String> signin(
         @ApiParam(value = "회원ID : 이메일", required = true) @RequestParam String email,
         @ApiParam(value = "비밀번호", required = true) @RequestParam String password) {
-        User user = userRepository.findByEmail(email).orElseThrow(CEmailSigninFailedException::new);
+        User user = userJpaRepository.findByEmail(email).orElseThrow(CEmailSigninFailedException::new);
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new CEmailSigninFailedException();
         }
@@ -51,7 +51,7 @@ public class SignController {
         @ApiParam(value = "회원ID : 이메일", required = true) @RequestParam String email,
         @ApiParam(value = "비밀번호", required = true) @RequestParam String password,
         @ApiParam(value = "이름", required = true) @RequestParam String name) {
-        userRepository.save(User.builder()
+        userJpaRepository.save(User.builder()
             .email(email)
             .password(passwordEncoder.encode(password))
             .name(name)

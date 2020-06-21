@@ -21,7 +21,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.kkwonsy.kkopservice.domain.User;
-import com.kkwonsy.kkopservice.repository.UserRepository;
+import com.kkwonsy.kkopservice.repository.UserJpaRepository;
 
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -41,7 +41,7 @@ public class UserControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -50,7 +50,7 @@ public class UserControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        userRepository.save(
+        userJpaRepository.save(
             User.builder()
                 .email("kkwonsytest@naver.com")
                 .name("kkwonsytest")
@@ -141,7 +141,7 @@ public class UserControllerTest {
 
     @Test
     public void delete() throws Exception {
-        Optional<User> user = userRepository.findByEmail("kkwonsytest@naver.com");
+        Optional<User> user = userJpaRepository.findByEmail("kkwonsytest@naver.com");
         assertTrue(user.isPresent());
         mockMvc.perform(MockMvcRequestBuilders
             .delete("/v1/user/" + user.get().getId())

@@ -50,7 +50,7 @@ public class UserCouponController {
     public CommonResult useCoupon(
         @ApiParam(value = "유저 id", required = true) @PathVariable Long userId,
         @ApiParam(value = "쿠폰 id", required = true) @PathVariable Long couponId,
-        @ApiParam(value = "사용 여부", required = true) @RequestParam boolean useYn) {
+        @ApiParam(value = "사용 여부", defaultValue = "true") @RequestParam(defaultValue = "true") boolean useYn) {
         if (useYn) {
             userCouponService.useCoupon(userId, couponId);
         } else {

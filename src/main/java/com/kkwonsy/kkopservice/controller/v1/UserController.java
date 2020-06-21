@@ -15,7 +15,7 @@ import com.kkwonsy.kkopservice.domain.User;
 import com.kkwonsy.kkopservice.model.response.CommonResult;
 import com.kkwonsy.kkopservice.model.response.ListResult;
 import com.kkwonsy.kkopservice.model.response.SingleResult;
-import com.kkwonsy.kkopservice.repository.UserRepository;
+import com.kkwonsy.kkopservice.repository.UserJpaRepository;
 import com.kkwonsy.kkopservice.service.ResponseService;
 
 import io.swagger.annotations.Api;
@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/v1")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserJpaRepository userJpaRepository;
     private final ResponseService responseService;
 
     @ApiImplicitParams({
@@ -40,7 +40,7 @@ public class UserController {
     @ApiOperation(value = "회원 리스트 조회", notes = "모든 회원을 조회한다")
     @GetMapping(value = "/users")
     public ListResult<User> findAllUser() {
-        return responseService.getListResult(userRepository.findAll());
+        return responseService.getListResult(userJpaRepository.findAll());
     }
 
     @ApiImplicitParams({
@@ -52,7 +52,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         return responseService
-            .getSingleResult(userRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new));
+            .getSingleResult(userJpaRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new));
     }
 
     @ApiImplicitParams({
@@ -65,9 +65,9 @@ public class UserController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        User user = userRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new);
+        User user = userJpaRepository.findByEmail(email).orElseThrow(CUserNotFoundException::new);
         user.setName(name);
-        return responseService.getSingleResult(userRepository.save(user));
+        return responseService.getSingleResult(userJpaRepository.save(user));
     }
 
 
@@ -78,7 +78,7 @@ public class UserController {
     @DeleteMapping(value = "/user/{id}")
     public CommonResult delete(
         @ApiParam(value = "회원번호", required = true) @PathVariable Long id) {
-        userRepository.deleteById(id);
+        userJpaRepository.deleteById(id);
         return responseService.getSuccessResult();
     }
 }

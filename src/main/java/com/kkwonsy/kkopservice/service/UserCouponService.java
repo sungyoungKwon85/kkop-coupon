@@ -15,10 +15,11 @@ import com.kkwonsy.kkopservice.domain.Coupon;
 import com.kkwonsy.kkopservice.domain.User;
 import com.kkwonsy.kkopservice.domain.UserCoupon;
 import com.kkwonsy.kkopservice.model.response.v1.IssuedCoupon;
+import com.kkwonsy.kkopservice.model.response.v1.UserCouponExpiry;
 import com.kkwonsy.kkopservice.repository.CouponJpaRepository;
-import com.kkwonsy.kkopservice.repository.CouponRepository;
+import com.kkwonsy.kkopservice.repository.UserCouponJpaRepository;
 import com.kkwonsy.kkopservice.repository.UserCouponRepository;
-import com.kkwonsy.kkopservice.repository.UserRepository;
+import com.kkwonsy.kkopservice.repository.UserJpaRepository;
 import com.kkwonsy.kkopservice.util.CouponUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 public class UserCouponService {
 
     private final CouponJpaRepository couponJpaRepository;
-    private final CouponRepository couponRepository;
-    private final UserRepository userRepository;
     private final UserCouponRepository userCouponRepository;
+    private final UserJpaRepository userJpaRepository;
+    private final UserCouponJpaRepository userCouponJpaRepository;
 
 
     @Transactional
@@ -58,10 +59,10 @@ public class UserCouponService {
         Coupon coupon = couponJpaRepository.findFirstByIssuedYnIsFalse();
         coupon.issueCoupon();
 
-        User user = userRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
+        User user = userJpaRepository.findById(userId).orElseThrow(CUserNotFoundException::new);
 
         UserCoupon userCoupon = UserCoupon.createUserCoupon(user, coupon);
-        userCouponRepository.save(userCoupon);
+        userCouponJpaRepository.save(userCoupon);
 
         return IssuedCoupon.builder()
             .couponCode(coupon.getCode())
@@ -72,7 +73,7 @@ public class UserCouponService {
     }
 
     public List<IssuedCoupon> getCouponsBy(Long userId) {
-        List<Coupon> coupons = couponRepository.findAllWithUserId(userId);
+        List<Coupon> coupons = userCouponRepository.findAllWithUserId(userId);
         return coupons.stream()
             .map(c -> IssuedCoupon.from(c))
             .collect(Collectors.toList());
@@ -80,10 +81,10 @@ public class UserCouponService {
 
     @Transactional
     public void useCoupon(Long userId, Long couponId) {
-        UserCoupon found = userCouponRepository.findByCouponIdAndUserId(couponId, userId);
+        UserCoupon found = userCouponJpaRepository.findByCouponIdAndUserId(couponId, userId);
         if (!found.isUsedYn()) {
             found.useCoupon();
-            userCouponRepository.save(found);
+            userCouponJpaRepository.save(found);
         } else {
             throw new AlreadyUsedCouponException();
         }
@@ -91,13 +92,17 @@ public class UserCouponService {
 
     @Transactional
     public void cancelUsingCoupon(Long userId, Long couponId) {
-        UserCoupon found = userCouponRepository.findByCouponIdAndUserId(couponId, userId);
+        UserCoupon found = userCouponJpaRepository.findByCouponIdAndUserId(couponId, userId);
         LocalDateTime hourAgo = LocalDateTime.now().minusHours(1);
         if (found.isUsedYn() && found.getUsedDate().isAfter(hourAgo)) { // 사용후 1시간 지나면 취소할 수 없음
             found.cancelUsingCoupon();
-            userCouponRepository.save(found);
+            userCouponJpaRepository.save(found);
         } else {
             throw new TimeOutToCancelCouponException();
         }
+    }
+
+    public List<UserCouponExpiry> getUserCouponExpiryWithin3Days() {
+        return userCouponRepository.getUserCouponExpiryWithin3Days();
     }
 }

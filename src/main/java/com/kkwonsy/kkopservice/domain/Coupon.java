@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -24,6 +25,7 @@ public class Coupon extends BaseDateEntity {
     @Column(nullable = false, unique = true, length = 200)
     private String code;
 
+    @Setter
     private LocalDate expiryDate;
 
     private boolean issuedYn;

@@ -20,11 +20,11 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class UserRepositoryTest {
+public class UserJpaRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
-    
+    private UserJpaRepository userJpaRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -33,14 +33,14 @@ public class UserRepositoryTest {
         String email = "kkwonsy@gmail.com";
         String name = "kkwonsy";
         // given
-        userRepository.save(User.builder()
+        userJpaRepository.save(User.builder()
             .email(email)
             .password(passwordEncoder.encode("1234"))
             .name(name)
             .roles(Collections.singletonList("ROLE_USER"))
             .build());
         // when
-        Optional<User> user = userRepository.findByEmail(email);
+        Optional<User> user = userJpaRepository.findByEmail(email);
         // then
         assertNotNull(user);
         assertTrue(user.isPresent());

@@ -1,86 +1,76 @@
 package com.kkwonsy.kkopservice.repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.kkwonsy.kkopservice.domain.Coupon;
 import com.kkwonsy.kkopservice.domain.User;
 import com.kkwonsy.kkopservice.domain.UserCoupon;
-import com.kkwonsy.kkopservice.model.response.v1.UserCouponExpiry;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
-public class UserCouponRepositoryTest {
+@DataJpaTest
+public class UserCouponJpaRepositoryTest {
 
     @Autowired
-    private UserCouponRepository userCouponRepository;
+    private UserCouponJpaRepository userCouponJpaRepository;
 
     @Autowired
     private CouponJpaRepository couponJpaRepository;
 
     @Autowired
     private UserJpaRepository userJpaRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserCouponJpaRepository userCouponJpaRepository;
-
     @Test
-    public void findAllWithUserId() throws Exception {
+    public void save() throws Exception {
         // given
         User user = saveAndGetUser();
 
         String code1 = LocalDateTime.now().toString();
         Coupon coupon1 = couponJpaRepository.save(Coupon.createCoupon(code1));
+
         String code2 = LocalDateTime.now().plusDays(10).toString();
         Coupon coupon2 = couponJpaRepository.save(Coupon.createCoupon(code2));
-        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon1));
-        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon2));
 
         // when
-        List<Coupon> coupons = userCouponRepository.findAllWithUserId(user.getId());
+        UserCoupon save1 = userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon1));
+        UserCoupon save2 = userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon2));
 
         // then
-        assertThat(coupons.size()).isEqualTo(2);
-        assertThat(coupons.get(0)).isNotNull();
-        assertThat(coupons.get(0).getCreatedAt().getDayOfMonth()).isEqualTo(LocalDateTime.now().getDayOfMonth());
+        assertThat(save1.getUser().getEmail()).isEqualTo(user.getEmail());
+        assertThat(save2.getUser().getEmail()).isEqualTo(user.getEmail());
+        assertThat(save1.getCoupon().getCode()).isEqualTo(code1);
+        assertThat(save2.getCoupon().getCode()).isEqualTo(code2);
     }
 
     @Test
-    public void getUserCouponExpiryWithin3Days() throws Exception {
+    public void findByCouponIdAndUserId() throws Exception {
         // given
         User user = saveAndGetUser();
-
         String code1 = LocalDateTime.now().toString();
         Coupon coupon1 = couponJpaRepository.save(Coupon.createCoupon(code1));
         String code2 = LocalDateTime.now().plusDays(10).toString();
         Coupon coupon2 = couponJpaRepository.save(Coupon.createCoupon(code2));
-        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon1));
-        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon2));
-        coupon1.setExpiryDate(LocalDate.now().plusDays(1));
-        coupon2.setExpiryDate(LocalDate.now().plusDays(1));
+        UserCoupon save1 = userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon1));
+        UserCoupon save2 = userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon2));
 
         // when
-        List<UserCouponExpiry> expiries = userCouponRepository.getUserCouponExpiryWithin3Days();
+        UserCoupon found = userCouponJpaRepository.findByCouponIdAndUserId(coupon1.getId(), user.getId());
+
         // then
-        assertThat(expiries).isNotNull();
-        assertThat(expiries.size()).isEqualTo(2);
-        assertThat(expiries.get(0).getUserName()).isEqualTo("kkwonsytest");
+        assertThat(found).isNotNull();
+        assertThat(found.getUser().getId()).isEqualTo(user.getId());
+        assertThat(found.getCoupon().getId()).isEqualTo(coupon1.getId());
     }
 
     private User saveAndGetUser() {

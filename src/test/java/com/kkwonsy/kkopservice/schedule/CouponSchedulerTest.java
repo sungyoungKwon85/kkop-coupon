@@ -1,8 +1,8 @@
-package com.kkwonsy.kkopservice.repository;
+package com.kkwonsy.kkopservice.schedule;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,52 +15,48 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kkwonsy.kkopservice.domain.Coupon;
 import com.kkwonsy.kkopservice.domain.User;
 import com.kkwonsy.kkopservice.domain.UserCoupon;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import com.kkwonsy.kkopservice.repository.CouponJpaRepository;
+import com.kkwonsy.kkopservice.repository.UserCouponJpaRepository;
+import com.kkwonsy.kkopservice.repository.UserJpaRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class CouponRepositoryTest {
+public class CouponSchedulerTest {
 
     @Autowired
-    private CouponRepository couponRepository;
+    private CouponScheduler couponScheduler;
 
     @Autowired
     private CouponJpaRepository couponJpaRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserCouponRepository userCouponRepository;
+    private UserCouponJpaRepository userCouponJpaRepository;
 
     @Test
-    public void findAllWithUserId() throws Exception {
+    public void checkAndPushExpiringCoupon() throws Exception {
         // given
         User user = saveAndGetUser();
 
-        String code1 = LocalDateTime.now().toString();
-        Coupon coupon1 = couponJpaRepository.save(Coupon.createCoupon(code1));
-        String code2 = LocalDateTime.now().plusDays(10).toString();
-        Coupon coupon2 = couponJpaRepository.save(Coupon.createCoupon(code2));
-        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon1));
-        userCouponRepository.save(UserCoupon.createUserCoupon(user, coupon2));
-
+        Coupon coupon1 = couponJpaRepository.save(Coupon.createCoupon(LocalDateTime.now().toString()));
+        Coupon coupon2 = couponJpaRepository.save(Coupon.createCoupon(LocalDateTime.now().plusDays(10).toString()));
+        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon1));
+        userCouponJpaRepository.save(UserCoupon.createUserCoupon(user, coupon2));
+        coupon1.setExpiryDate(LocalDate.now().plusDays(1));
+        coupon2.setExpiryDate(LocalDate.now().plusDays(2));
         // when
-        List<Coupon> coupons = couponRepository.findAllWithUserId(user.getId());
-
+        couponScheduler.checkAndPushExpiringCoupon();
         // then
-        assertThat(coupons.size()).isEqualTo(2);
-        assertThat(coupons.get(0)).isNotNull();
-        assertThat(coupons.get(0).getCreatedAt().getDayOfMonth()).isEqualTo(LocalDateTime.now().getDayOfMonth());
     }
 
     private User saveAndGetUser() {
-        return userRepository.save(
+        return userJpaRepository.save(
             User.builder()
                 .email("kkwonsytest@naver.com")
                 .name("kkwonsytest")
@@ -68,4 +64,5 @@ public class CouponRepositoryTest {
                 .roles(Collections.singletonList("ROLE_USER"))
                 .build());
     }
+
 }

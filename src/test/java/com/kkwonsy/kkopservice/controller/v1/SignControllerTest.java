@@ -18,7 +18,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.kkwonsy.kkopservice.domain.User;
-import com.kkwonsy.kkopservice.repository.UserRepository;
+import com.kkwonsy.kkopservice.repository.UserJpaRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,14 +35,14 @@ public class SignControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userJpaRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Before
     public void setUp() throws Exception {
-        userRepository.save(
+        userJpaRepository.save(
             User.builder()
                 .email("kkwonsytest@naver.com")
                 .name("kkwonsytest")

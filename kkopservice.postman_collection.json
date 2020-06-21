@@ -1,0 +1,292 @@
+{
+  "info": {
+    "_postman_id": "704b04cf-f56d-4312-ae1f-dee0cbe1ac7c",
+    "name": "kkopservice",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. v1/signup",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTI0MjI3MTIsInVzZXJfbmFtZSI6Imtrd29uc3lAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImE0MTAzYzY3LTQzZjItNGVlMi1hYTkxLWMzYmVjOWY1MDg4NSIsImNsaWVudF9pZCI6InRlc3RDbGllbnRJZCIsInNjb3BlIjpbInJlYWQiXX0.OeVKG2t-SbIvNJ4nz5915G-b7jNQyixjhMaX_r6W27kwQkAx4fpB6GH6J2_QoPs5SdNluvqs5WAurO4hNoXN_B8ECK_vqFozT2dnxnWRuxGyrQgnH4P9IovTQLmRqq4r40zFyfC7CAOEM6P4LkFvDEhqFpMqLAOyBWlJ1EpHkO6os1MorZ8-8Afgm0olYWIQhOb6mX9KmwLdDg8ri-IdcDjP6389oCst_WcRCMHlaOAxTIP9y1KvlBw-pKs2kTBZAhXVtfzKAyQ_hzZv1E3zZodN868wRPeIuLKHnPy5M6_3GOkgW0Im2HBwFjNb05MGIM51emYMxolN4u8k0FpZ5w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/v1/signup?email=kkwonsy@gmail.com&password=1234&name=kkwonsy",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "v1",
+            "signup"
+          ],
+          "query": [
+            {
+              "key": "email",
+              "value": "kkwonsy@gmail.com"
+            },
+            {
+              "key": "password",
+              "value": "1234"
+            },
+            {
+              "key": "name",
+              "value": "kkwonsy"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. v1/signin",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTI0MjI3MTIsInVzZXJfbmFtZSI6Imtrd29uc3lAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImE0MTAzYzY3LTQzZjItNGVlMi1hYTkxLWMzYmVjOWY1MDg4NSIsImNsaWVudF9pZCI6InRlc3RDbGllbnRJZCIsInNjb3BlIjpbInJlYWQiXX0.OeVKG2t-SbIvNJ4nz5915G-b7jNQyixjhMaX_r6W27kwQkAx4fpB6GH6J2_QoPs5SdNluvqs5WAurO4hNoXN_B8ECK_vqFozT2dnxnWRuxGyrQgnH4P9IovTQLmRqq4r40zFyfC7CAOEM6P4LkFvDEhqFpMqLAOyBWlJ1EpHkO6os1MorZ8-8Afgm0olYWIQhOb6mX9KmwLdDg8ri-IdcDjP6389oCst_WcRCMHlaOAxTIP9y1KvlBw-pKs2kTBZAhXVtfzKAyQ_hzZv1E3zZodN868wRPeIuLKHnPy5M6_3GOkgW0Im2HBwFjNb05MGIM51emYMxolN4u8k0FpZ5w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/v1/signin?email=kkwonsy@gmail.com&password=1234",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "v1",
+            "signin"
+          ],
+          "query": [
+            {
+              "key": "email",
+              "value": "kkwonsy@gmail.com"
+            },
+            {
+              "key": "password",
+              "value": "1234"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. 쿠폰 생성",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTI0MjI3MTIsInVzZXJfbmFtZSI6Imtrd29uc3lAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImE0MTAzYzY3LTQzZjItNGVlMi1hYTkxLWMzYmVjOWY1MDg4NSIsImNsaWVudF9pZCI6InRlc3RDbGllbnRJZCIsInNjb3BlIjpbInJlYWQiXX0.OeVKG2t-SbIvNJ4nz5915G-b7jNQyixjhMaX_r6W27kwQkAx4fpB6GH6J2_QoPs5SdNluvqs5WAurO4hNoXN_B8ECK_vqFozT2dnxnWRuxGyrQgnH4P9IovTQLmRqq4r40zFyfC7CAOEM6P4LkFvDEhqFpMqLAOyBWlJ1EpHkO6os1MorZ8-8Afgm0olYWIQhOb6mX9KmwLdDg8ri-IdcDjP6389oCst_WcRCMHlaOAxTIP9y1KvlBw-pKs2kTBZAhXVtfzKAyQ_hzZv1E3zZodN868wRPeIuLKHnPy5M6_3GOkgW0Im2HBwFjNb05MGIM51emYMxolN4u8k0FpZ5w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-AUTH-TOKEN",
+            "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1NSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE1OTI3MzY1MTAsImV4cCI6MTU5Mjc0MDExMH0.NLWBUOr5r4nK3xXK-rcShZAOEeKOxzNfVNd6fOtRy8E",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/coupons?n=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "coupons"
+          ],
+          "query": [
+            {
+              "key": "n",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. v1/user",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTI0MjI3MTIsInVzZXJfbmFtZSI6Imtrd29uc3lAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImE0MTAzYzY3LTQzZjItNGVlMi1hYTkxLWMzYmVjOWY1MDg4NSIsImNsaWVudF9pZCI6InRlc3RDbGllbnRJZCIsInNjb3BlIjpbInJlYWQiXX0.OeVKG2t-SbIvNJ4nz5915G-b7jNQyixjhMaX_r6W27kwQkAx4fpB6GH6J2_QoPs5SdNluvqs5WAurO4hNoXN_B8ECK_vqFozT2dnxnWRuxGyrQgnH4P9IovTQLmRqq4r40zFyfC7CAOEM6P4LkFvDEhqFpMqLAOyBWlJ1EpHkO6os1MorZ8-8Afgm0olYWIQhOb6mX9KmwLdDg8ri-IdcDjP6389oCst_WcRCMHlaOAxTIP9y1KvlBw-pKs2kTBZAhXVtfzKAyQ_hzZv1E3zZodN868wRPeIuLKHnPy5M6_3GOkgW0Im2HBwFjNb05MGIM51emYMxolN4u8k0FpZ5w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-AUTH-TOKEN",
+            "type": "text",
+            "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1NSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE1OTI3MzY1MTAsImV4cCI6MTU5Mjc0MDExMH0.NLWBUOr5r4nK3xXK-rcShZAOEeKOxzNfVNd6fOtRy8E"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/v1/user",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "v1",
+            "user"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. 쿠폰 발급",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTI0MjI3MTIsInVzZXJfbmFtZSI6Imtrd29uc3lAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImE0MTAzYzY3LTQzZjItNGVlMi1hYTkxLWMzYmVjOWY1MDg4NSIsImNsaWVudF9pZCI6InRlc3RDbGllbnRJZCIsInNjb3BlIjpbInJlYWQiXX0.OeVKG2t-SbIvNJ4nz5915G-b7jNQyixjhMaX_r6W27kwQkAx4fpB6GH6J2_QoPs5SdNluvqs5WAurO4hNoXN_B8ECK_vqFozT2dnxnWRuxGyrQgnH4P9IovTQLmRqq4r40zFyfC7CAOEM6P4LkFvDEhqFpMqLAOyBWlJ1EpHkO6os1MorZ8-8Afgm0olYWIQhOb6mX9KmwLdDg8ri-IdcDjP6389oCst_WcRCMHlaOAxTIP9y1KvlBw-pKs2kTBZAhXVtfzKAyQ_hzZv1E3zZodN868wRPeIuLKHnPy5M6_3GOkgW0Im2HBwFjNb05MGIM51emYMxolN4u8k0FpZ5w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-AUTH-TOKEN",
+            "type": "text",
+            "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1NSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE1OTI3MzY1MTAsImV4cCI6MTU5Mjc0MDExMH0.NLWBUOr5r4nK3xXK-rcShZAOEeKOxzNfVNd6fOtRy8E"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/55/coupons/issues",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "55",
+            "coupons",
+            "issues"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "6. 쿠폰 조회",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTI0MjI3MTIsInVzZXJfbmFtZSI6Imtrd29uc3lAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImE0MTAzYzY3LTQzZjItNGVlMi1hYTkxLWMzYmVjOWY1MDg4NSIsImNsaWVudF9pZCI6InRlc3RDbGllbnRJZCIsInNjb3BlIjpbInJlYWQiXX0.OeVKG2t-SbIvNJ4nz5915G-b7jNQyixjhMaX_r6W27kwQkAx4fpB6GH6J2_QoPs5SdNluvqs5WAurO4hNoXN_B8ECK_vqFozT2dnxnWRuxGyrQgnH4P9IovTQLmRqq4r40zFyfC7CAOEM6P4LkFvDEhqFpMqLAOyBWlJ1EpHkO6os1MorZ8-8Afgm0olYWIQhOb6mX9KmwLdDg8ri-IdcDjP6389oCst_WcRCMHlaOAxTIP9y1KvlBw-pKs2kTBZAhXVtfzKAyQ_hzZv1E3zZodN868wRPeIuLKHnPy5M6_3GOkgW0Im2HBwFjNb05MGIM51emYMxolN4u8k0FpZ5w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-AUTH-TOKEN",
+            "type": "text",
+            "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1NSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE1OTI3MzY1MTAsImV4cCI6MTU5Mjc0MDExMH0.NLWBUOr5r4nK3xXK-rcShZAOEeKOxzNfVNd6fOtRy8E"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/55/coupons",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "55",
+            "coupons"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "7. 쿠폰 사용",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTI0MjI3MTIsInVzZXJfbmFtZSI6Imtrd29uc3lAZ21haWwuY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6ImE0MTAzYzY3LTQzZjItNGVlMi1hYTkxLWMzYmVjOWY1MDg4NSIsImNsaWVudF9pZCI6InRlc3RDbGllbnRJZCIsInNjb3BlIjpbInJlYWQiXX0.OeVKG2t-SbIvNJ4nz5915G-b7jNQyixjhMaX_r6W27kwQkAx4fpB6GH6J2_QoPs5SdNluvqs5WAurO4hNoXN_B8ECK_vqFozT2dnxnWRuxGyrQgnH4P9IovTQLmRqq4r40zFyfC7CAOEM6P4LkFvDEhqFpMqLAOyBWlJ1EpHkO6os1MorZ8-8Afgm0olYWIQhOb6mX9KmwLdDg8ri-IdcDjP6389oCst_WcRCMHlaOAxTIP9y1KvlBw-pKs2kTBZAhXVtfzKAyQ_hzZv1E3zZodN868wRPeIuLKHnPy5M6_3GOkgW0Im2HBwFjNb05MGIM51emYMxolN4u8k0FpZ5w",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [
+          {
+            "key": "X-AUTH-TOKEN",
+            "type": "text",
+            "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1NSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE1OTI3MzY1MTAsImV4cCI6MTU5Mjc0MDExMH0.NLWBUOr5r4nK3xXK-rcShZAOEeKOxzNfVNd6fOtRy8E"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/users/55/coupons/79",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "users",
+            "55",
+            "coupons",
+            "79"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
+}
