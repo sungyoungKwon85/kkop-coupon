@@ -15,7 +15,7 @@
 * ../h2/bin/h2.sh 실행
 * 데이터베이스 파일 생성 방법
   * jdbc:h2:~/kkopservice (최소 한번)
-  * ~/coupon.mv.db 파일 생성 확인
+  * ~/kkopservice.mv.db 파일 생성 확인
   * 이후 부터는 jdbc:h2:tcp://localhost/~/kkopservice 로 접속하면 됩니다. 
 #
 
